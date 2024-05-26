@@ -160,9 +160,6 @@ case $ID in
   ubuntu)
     ubuntu_setup
     ;;
-  arch)
-    arch_setup
-    ;;
   *)
     _task "Unsupported OS"
     _cmd "echo 'Unsupported OS'"
@@ -178,13 +175,13 @@ if ! [[ -f "$SSH_DIR/authorized_keys" ]]; then
   _cmd "cat $SSH_DIR/id_rsa.pub >> $SSH_DIR/authorized_keys"
 fi
 
-# if ! [[ -d "$DOTFILES_DIR" ]]; then
-#   _task "Cloning repository"
-#   _cmd "git clone --quiet https://github.com/caseymullineaux/dotfiles.git $DOTFILES_DIR"
-# else
-#   _task "Updating repository"
-#   _cmd "git -C $DOTFILES_DIR pull --quiet"
-# fi
+if ! [[ -d "$dotfiles_dir" ]]; then
+  _task "cloning repository"
+  _cmd "git clone --quiet https://github.com/caseymullineaux/dotfiles.git $dotfiles_dir"
+else
+  _task "updating repository"
+  _cmd "git -c $dotfiles_dir pull --quiet"
+fi
 
 pushd "$DOTFILES_DIR" 2>&1 > /dev/null
 update_ansible_galaxy $ID

@@ -1,23 +1,12 @@
 default_roles:
   - system
   - 1password
-  # - alacritty
-  # - asciiquarium
   - bash
   # - bat
   # - docker
-  # - flatpak
   # - fonts
   # - fzf
   # - git
-  # - go
-  # - helm
-  # - k8s
-  # - k9s
-  # - lazygit
-  # - lsd
-  # - lua
-  # - nala
   # - neofetch
   # - neovim
   # - npm
@@ -25,16 +14,10 @@ default_roles:
   # - obsidian
   - pwsh
   # - python
-  # - ruby
-  # - rust
   # - ssh
   # - sshfs
-  # - terraform
   # - tldr
-  # - tmate
   # - tmux
-  # - zellij
-  # - spotify
   # - zoxide
   - zsh
 
@@ -52,9 +35,6 @@ bash_private:
   OPENAI_KEY: ""
   # for `write-the` and shell-gpt
   OPENAI_API_KEY: ""
-
-flatpak_packages:
-  - md.obsidian.Obsidian
 
 ssh_key:
   home-network: !vault |
