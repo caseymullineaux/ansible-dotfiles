@@ -167,7 +167,7 @@ case $ID in
 esac
 
 # Generate new ssh keys if they don't exist
-if ! [[ -f "$SSH_DIR/authorized_keys" ]]; then
+if ! [[ -f "$SSH_DIR/id_rsa" ]]; then
   _task "Generating SSH keys"
   _cmd "mkdir -p $SSH_DIR"
   _cmd "chmod 700 $SSH_DIR"
@@ -175,12 +175,12 @@ if ! [[ -f "$SSH_DIR/authorized_keys" ]]; then
   _cmd "cat $SSH_DIR/id_rsa.pub >> $SSH_DIR/authorized_keys"
 fi
 
-if ! [[ -d "$dotfiles_dir" ]]; then
+if ! [[ -d "$DOTFILES_DIR" ]]; then
   _task "cloning repository"
-  _cmd "git clone --quiet https://github.com/caseymullineaux/dotfiles.git $dotfiles_dir"
+  _cmd "git clone --quiet https://github.com/caseymullineaux/ansible-dotfiles.git $DOTFILES_DIR"
 else
   _task "updating repository"
-  _cmd "git -c $dotfiles_dir pull --quiet"
+  _cmd "git -c $DOTFILES_DIR pull --quiet"
 fi
 
 pushd "$DOTFILES_DIR" 2>&1 > /dev/null
@@ -188,9 +188,9 @@ update_ansible_galaxy $ID
 
 _task "Running playbook"; _task_done
 if [[ -f $VAULT_SECRET ]]; then
-  ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES_DIR/main.yml" "$@"
+  ansible-playbook --diff --vault-password-file $VAULT_SECRET "$DOTFILES_DIR/main.yml" "$@"
 else
-  ansible-playbook "$DOTFILES_DIR/main.yml" "$@"
+  ansible-playbook --diff "$DOTFILES_DIR/main.yml" "$@"
 fi
 
 popd 2>&1 > /dev/null
