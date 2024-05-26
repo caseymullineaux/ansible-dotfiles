@@ -1,0 +1,9 @@
+- name: Configure Windows PowerShell ExecutionPolicy
+  win_shell: |
+    Set-ExecutionPolicy RemoteSigned -Force -Scope CurrentUser
+    $CurrentPolicy = Get-ExecutionPolicy
+    Write-Host ($CurrentPolicy -eq 'RemoteSigned')
+  args:
+    executable: powershell.exe
+  # when: ansible_os_family == "Windows"
+

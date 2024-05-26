@@ -1,0 +1,78 @@
+- name: "ZSH | Install"
+  ansible.builtin.apt:
+    name:
+      - zsh
+    state: present
+  become: true
+
+- name: "ZSH | Detect oh-my-zsh"
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.oh-my-zsh"
+  register: ohmyzsh
+
+- name: "ZSH | Register oh-my-zsh state"
+  ansible.builtin.set_fact:
+    ohmyzsh_is_installed: "{{ ohmyzsh.stat.exists }}"
+
+- name: "ZSH | Install oh-my-zsh"
+  when: not ohmyzsh_is_installed
+  block:
+    - name: "ZSH | Download oh-my-zsh Install Script"
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+        dest: /{{ ansible_user_dir }}/oh-my-zsh.install.sh
+        force: true
+        mode: "0755"
+      notify:
+        - "ZSH | Cleanup oh-my-zsh install script"
+
+    - name: "ZSH | Run the install script"
+      ansible.builtin.script:
+        cmd: /{{ ansible_user_dir }}/oh-my-zsh.install.sh
+
+- name: "ZSH | Debug ohmyzsh_is_installed"
+  ansible.builtin.debug:
+    var: ohmyzsh_is_installed
+
+- name: "ZSH | Install Powerlevel10k"
+  block:
+    - name: "ZSH | Download Powerlevel 10k"
+      ansible.builtin.git:
+        repo: https://github.com/romkatv/powerlevel10k.git
+        dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/themes/powerlevel10k"
+
+    - name: "ZSH | Copy .p10k.zsh"
+      ansible.builtin.copy:
+        src: ".p10k.zsh"
+        dest: "{{ ansible_user_dir }}/.p10k.zsh"
+        mode: "0644"
+
+- name: "ZSH | Install zsh-syntax-highlighting"
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+
+- name: "ZSH | Install Cattppuccin Theme"
+  block:
+    - name: "ZSH | Download Catppuccin Theme"
+      ansible.builtin.git:
+        repo: https://github.com/catppuccin/zsh-syntax-highlighting.git
+        dest: "{{ ansible_user_dir}}/zsh-syntax-highlighting"
+        force: true
+
+    - name: "ZSH | Copy Catppuccin theme"
+      ansible.builtin.copy:
+        src: "{{ ansible_user_dir}}/zsh-syntax-highlighting/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh"
+        dest: "{{ ansible_user_dir }}/.zsh/themes/"
+        directory_mode: "0755"
+        mode: "0644"
+        force: true
+
+      notify:
+        - "ZSH | Remove Catppuccin Theme"
+
+- name: "ZSH | Copy .zshrc"
+  ansible.builtin.copy:
+    src: ".zshrc"
+    dest: "{{ ansible_user_dir }}/.zshrc"
+    mode: "0644"
