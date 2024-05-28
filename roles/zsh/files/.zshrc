@@ -116,3 +116,32 @@ eval "$(gh copilot alias -- zsh)"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+
+### Custom Personalised Config ###
+
+# sets keybindings to allow navigating back and forward by word
+# using the arrow keys
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backword-word
+
+# load custom aliases
+source ~/.bash_aliases
+
+# configure 1Password zsh shell completion
+eval "$(op completion sh)"; compdef _op op
+
+# configure 1Password SSH Agent
+(
+  set -eu
+  piperelay=(setsid socat "UNIX-LISTEN:$SSH_AUTH_SOCK,fork" "EXEC:npiperelay.exe -ei -s //./pipe/openssh-ssh-agent,nofork")
+  if ! pgrep --full --exact --uid=${UID} "${piperelay[*]}" >/dev/null
+  then
+    rm -f "$SSH_AUTH_SOCK"
+    ("${piperelay[@]}" &) >/dev/null
+  fi
+)
+
+# configure vivid colour ls
+export LS_COLORS="$(vivid generate catppuccin-mocha)"
+
