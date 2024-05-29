@@ -1,0 +1,9 @@
+- name: "oh-my-posh | Install oh-my-posh"
+  ansible.windows.win_command:
+    cmd: winget install JanDeDobbeleer.OhMyPosh -s winget
+
+- name: "oh-my-posh | Copy catppuccin theme"
+  ansible.builtin.copy:
+    src: "catppuccin_mocha_custom.omp.json"
+    dest: "{{ ansible_user_dir }}/AppData/Local/Programs/oh-my-posh/themes/catppuccin_mocha_custom.omp.json"
+    # mode: "0644"
