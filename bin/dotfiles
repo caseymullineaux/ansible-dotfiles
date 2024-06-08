@@ -113,6 +113,23 @@ function ubuntu_setup() {
   fi
 }
 
+function mac_setup() {
+  if ! brew list ansible &>/dev/null; then
+    _task "Installing Ansible"
+    _cmd "brew install ansible"
+  fi
+  if ! brew list python3 &>/dev/null; then
+    _task "Installing Python3"
+    _cmd "brew install python3"
+    _cmd curl https://bootstrap.pypa.io/get-pip.py | python
+  fi
+  if ! pip3 list | grep watchdog &>/dev/null; then
+    _task "Installing Python3 Watchdog"
+    _cmd "pip3 install watchdog"
+  fi
+}
+
+
 # function arch_setup() {
 #   if ! [ -x "$(command -v ansible)" ]; then
 #     _task "Installing Ansible"
@@ -154,11 +171,15 @@ update_ansible_galaxy() {
   _cmd "ansible-galaxy install -r $DOTFILES_DIR/requirements/common.yml $os_requirements"
 }
 
-source /etc/os-release
+#source /etc/os-release
+ID=$(echo $OSTYPE)
 _task "Loading Setup for detected OS: $ID"
 case $ID in
   ubuntu)
     ubuntu_setup
+    ;;
+  darwin*)
+    mac_setup
     ;;
   *)
     _task "Unsupported OS"
