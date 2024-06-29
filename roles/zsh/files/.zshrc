@@ -145,3 +145,11 @@ eval "$(op completion sh)"; compdef _op op
 # configure vivid colour ls
 export LS_COLORS="$(vivid generate catppuccin-mocha)"
 
+# setup fzf keybindings
+source <(fzf --zsh)
+HISTFILE=~/.zsh_history
+HISTZIE=10000
+SAVEHIST=10000
+setopt appendhistory
+
+

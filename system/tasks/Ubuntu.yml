@@ -10,5 +10,6 @@
   ansible.builtin.apt:
     name:
       - jq
+      - fzf
     state: present
   become: true
