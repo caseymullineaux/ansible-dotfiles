@@ -30,3 +30,4 @@ cat ~/.ssh/id_rsa | ansible-vault encrypt_string --vault-password-file $HOME/.co
 ### Mac
 - brew install zsh-syntax-highlighting
 - brew install zsh-autosuggestions
+- brew install wezterm
