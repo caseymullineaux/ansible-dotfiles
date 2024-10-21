@@ -24,3 +24,9 @@ cat ~/.ssh/id_rsa | ansible-vault encrypt_string --vault-password-file $HOME/.co
 
 
 . It is not included in the repository for security reasons.
+
+
+## To Do:
+### Mac
+- brew install zsh-syntax-highlighting
+- brew install zsh-autosuggestions
