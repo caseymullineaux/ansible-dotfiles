@@ -31,3 +31,4 @@ cat ~/.ssh/id_rsa | ansible-vault encrypt_string --vault-password-file $HOME/.co
 - brew install zsh-syntax-highlighting
 - brew install zsh-autosuggestions
 - brew install wezterm
+- brew install --cask karabiner-elements
