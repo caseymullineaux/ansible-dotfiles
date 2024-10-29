@@ -29,6 +29,7 @@ cat ~/.ssh/id_rsa | ansible-vault encrypt_string --vault-password-file $HOME/.co
 ## To Do:
 ### Mac
 _Create a brewfile for these:_
+_Example: https://github.com/backwardspy/dots/blob/main/Brewfile_
 - brew install zsh-syntax-highlighting
 - brew install zsh-autosuggestions
 - brew install wezterm
