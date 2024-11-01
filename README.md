@@ -36,6 +36,7 @@ _Example: https://github.com/backwardspy/dots/blob/main/Brewfile_
 - brew install --cask hyperkey
 - brew install eza
 - brew install fzf
+- brew install --cask nikitabobko/tap/aerospace
 
 Aliases:
 
