@@ -4,4 +4,5 @@ brew install wezterm
 brew install --cask hyperkey
 brew install eza
 brew install fzf
+brew install ripgrep
 brew install --cask nikitabobko/tap/aerospace
